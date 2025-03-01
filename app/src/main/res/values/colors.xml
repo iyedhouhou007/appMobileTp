@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cardColorGreen">#E8F5E9</color>
+    <color name="primaryColorGreen">#8bc34a</color>
+    <color name="gradeColorGreen">#4caf50</color>
+    <color name="gradeColorRed">#f44336</color>
+    <color name="accentColorGreen">#388E3C</color>
+    <color name="warningColorGreen">#FFEB3B</color>
+    <color name="red">#D32F2F</color>
+    <color name="white">#fff</color>
+    <color name="backgroundColor">#FFDCEDC8</color>
+    <color name="black">#000</color>
+</resources>
