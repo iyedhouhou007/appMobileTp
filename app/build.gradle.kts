@@ -35,13 +35,17 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:1.11.0") // Material 3
+    implementation("androidx.core:core-splashscreen:1.0.1") // Android 12+ Splash API
+
     implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.material) // Make sure `libs.material` is correctly defined in `libs.versions.toml`
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.recyclerview)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

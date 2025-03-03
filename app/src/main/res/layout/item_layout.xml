@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    app:cardCornerRadius="15dp"
-    app:cardElevation="4dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="14dp"
+    android:padding="16dp"
     app:cardBackgroundColor="@color/white"
-    android:padding="16dp">
+    app:cardCornerRadius="15dp"
+    app:cardElevation="4dp">
 
     <!-- Main LinearLayout -->
     <LinearLayout
@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="Module 1"
             android:textColor="@color/primaryColorGreen"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -34,43 +33,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/td"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
-                android:hint="TD Mark"
+                android:hint="@string/td_mark"
                 android:inputType="numberDecimal"
                 android:maxLength="4"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/tp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
                 android:hint="TP Mark"
                 android:inputType="numberDecimal"
                 android:maxLength="4"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/exam"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
-                android:hint="Exam Mark"
+                android:hint="@string/exam_mark"
                 android:inputType="numberDecimal"
                 android:maxLength="4"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <!-- Grade and Additional Text Section -->
@@ -82,64 +83,62 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
+            <!-- Coefficient and Credit Info -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <!-- Coefficient Info -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:gravity="start"
-                        android:text="Coefficient: "
+                        android:text="@string/coefficient"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/cof"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
                 </LinearLayout>
 
+                <!-- Credit Info -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="75dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:gravity="start"
-                        android:text="Credit: "
+                        android:text="@string/credit"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/credit"
-                        android:layout_width="155dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
+            <!-- Grade Info -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -148,22 +147,21 @@
 
                 <TextView
                     android:id="@+id/tvGrade"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Grade:"
+                    android:text="@string/grade"
                     android:textColor="@color/gradeColorGreen"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/grade"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </LinearLayout>

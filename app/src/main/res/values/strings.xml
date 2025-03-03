@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyAppMobileTp</string>
+    <string name="grade">Grade:</string>
+    <string name="credit">Credit:</string>
+    <string name="coefficient">Coefficient:</string>
+    <string name="exam_mark">Exam Mark</string>
+    <string name="td_mark">TD Mark</string>
+    <string name="module_1">Module 1</string>
 </resources>
