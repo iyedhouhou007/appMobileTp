@@ -7,18 +7,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.GradesActivity">
 
     <!-- Toolbar at the top -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/primaryColorGreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Grade Calculator"
+        app:title="@string/app_name"
         app:titleTextColor="@android:color/white" />
 
     <!-- TextView below the Toolbar -->

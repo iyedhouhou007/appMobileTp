@@ -10,4 +10,5 @@
     <color name="white">#fff</color>
     <color name="backgroundColor">#FFDCEDC8</color>
     <color name="black">#000</color>
+    <color name="disabledTextColor">#9E9E9E</color>
 </resources>
