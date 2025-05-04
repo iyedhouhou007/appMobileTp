@@ -6,61 +6,54 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="?attr/android:colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".ui.GradesActivity">
 
-    <!-- Toolbar at the top -->
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/primaryColorGreen"
+        layout="@layout/toolbar_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name"
-        app:titleTextColor="@android:color/white" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- TextView below the Toolbar -->
     <TextView
         android:id="@+id/tvOverallGrade"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/spacing_medium"
         android:background="@drawable/textview_background"
-        android:elevation="8dp"
+        android:elevation="4dp"
         android:gravity="center"
-        android:padding="16dp"
+        android:padding="@dimen/spacing_medium"
         android:text="Overall Grade: 0.00"
-        android:textColor="@color/gradeColorGreen"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textColor="?attr/colorSecondary"
+        style="@style/HeaderText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <!-- Horizontal Divider (HR Line) -->
     <View
         android:id="@+id/hr"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/black"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:background="?attr/colorPrimary"
+        android:alpha="0.3"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvOverallGrade" />
 
-    <!-- RecyclerView below the HR line -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingStart="16dp"
+        android:paddingStart="@dimen/spacing_medium"
         android:paddingTop="0dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:paddingEnd="@dimen/spacing_medium"
+        android:paddingBottom="@dimen/spacing_medium"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

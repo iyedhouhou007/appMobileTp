@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.iyed_houhou.myappmobiletp.DatabaseHelper;
 import com.iyed_houhou.myappmobiletp.R;
@@ -33,6 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        // Set up toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Login");
 
         dbHelper = new DatabaseHelper(this);
 
@@ -62,19 +68,12 @@ public class LoginActivity extends AppCompatActivity {
                     
                     String userRole = getUserRole(username);
                     if (userRole != null) {
-                        if (userRole.equals("Student")) {
-                            // Navigate to student main activity
-                            Intent intent = new Intent(LoginActivity.this, GradesActivity.class);
-                            intent.putExtra("username", username);
-                            startActivity(intent);
-                            finish();
-                        } else if (userRole.equals("Teacher")) {
-                            // Navigate to teacher main activity
-                            Intent intent = new Intent(LoginActivity.this, TeacherActivity.class);
-                            intent.putExtra("username", username);
-                            startActivity(intent);
-                            finish();
-                        }
+                        // Navigate to menu activity
+                        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                        intent.putExtra("username", username);
+                        intent.putExtra("userRole", userRole);
+                        startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Error retrieving user role", Toast.LENGTH_SHORT).show();
                     }

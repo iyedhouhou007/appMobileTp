@@ -1,16 +1,22 @@
 package com.iyed_houhou.myappmobiletp.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.iyed_houhou.myappmobiletp.DatabaseHelper;
 import com.iyed_houhou.myappmobiletp.R;
@@ -18,7 +24,7 @@ import com.iyed_houhou.myappmobiletp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeacherActivity extends Activity {
+public class TeacherActivity extends AppCompatActivity {
 
     private TextView tvTeacherUsername;
     private TextView tvTeacherName;
@@ -35,6 +41,20 @@ public class TeacherActivity extends Activity {
         setContentView(R.layout.activity_teacher);
 
         dbHelper = new DatabaseHelper(this);
+
+        // Set up toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Teacher Dashboard");
+        }
+        
+        // Apply system spacing (status bar height) to the Toolbar
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(v.getPaddingLeft(), statusBarHeight, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
 
         tvTeacherUsername = findViewById(R.id.tvTeacherUsername);
         tvTeacherName = findViewById(R.id.tvTeacherName);
@@ -61,6 +81,33 @@ public class TeacherActivity extends Activity {
 
         // Set up click listeners for buttons
         setupButtonListeners();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.student_menu, menu); // Reuse student menu for now
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_logout) {
+            // Clear login session and navigate to login screen
+            SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear();
+            editor.apply();
+
+            Intent intent = new Intent(TeacherActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupButtonListeners() {
@@ -157,7 +204,14 @@ public class TeacherActivity extends Activity {
             if (modules.isEmpty()) {
                 tvTeacherModules.setText("Modules: No modules assigned");
             } else {
-                tvTeacherModules.setText("Modules: " + String.join(", ", modules));
+                StringBuilder modulesText = new StringBuilder("Modules: ");
+                for (int i = 0; i < modules.size(); i++) {
+                    modulesText.append(modules.get(i));
+                    if (i < modules.size() - 1) {
+                        modulesText.append(", ");
+                    }
+                }
+                tvTeacherModules.setText(modulesText.toString());
             }
         } catch (Exception e) {
             Log.e(TAG, "Error displaying teacher details", e);

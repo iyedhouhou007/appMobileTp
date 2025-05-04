@@ -1,65 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="14dp"
-    android:padding="16dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="15dp"
-    app:cardElevation="4dp">
+    android:layout_marginTop="@dimen/spacing_medium"
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:layout_marginStart="@dimen/spacing_medium"
+    android:layout_marginEnd="@dimen/spacing_medium"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation">
 
-    <!-- Main LinearLayout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/spacing_large">
 
-        <!-- Module Title -->
         <TextView
             android:id="@+id/moduleName"
+            style="@style/SubheaderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textColor="@color/primaryColorGreen"
+            android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Module Name" />
 
-        <!-- Inputs Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/spacing_small"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/td"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/spacing_small"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
                 android:hint="@string/td_mark"
                 android:inputType="numberDecimal"
                 android:maxLength="4"
-                android:padding="15dp"
-                android:textColor="@color/black" />
+                android:padding="@dimen/input_padding"
+                android:textColor="?attr/colorOnBackground" />
 
             <EditText
                 android:id="@+id/tp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/spacing_small"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
                 android:hint="TP Mark"
                 android:inputType="numberDecimal"
                 android:maxLength="4"
-                android:padding="15dp"
-                android:textColor="@color/black" />
+                android:padding="@dimen/input_padding"
+                android:textColor="?attr/colorOnBackground" />
 
             <EditText
                 android:id="@+id/exam"
@@ -70,80 +72,74 @@
                 android:hint="@string/exam_mark"
                 android:inputType="numberDecimal"
                 android:maxLength="4"
-                android:padding="15dp"
-                android:textColor="@color/black" />
+                android:padding="@dimen/input_padding"
+                android:textColor="?attr/colorOnBackground" />
         </LinearLayout>
 
-        <!-- Grade and Additional Text Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/spacing_medium"
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <!-- Coefficient and Credit Info -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Coefficient Info -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/BodyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/coefficient"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        style="@style/BodyText"
                         android:id="@+id/cof"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        tools:text="X"/>
                 </LinearLayout>
 
-                <!-- Credit Info -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/BodyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/credit"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        style="@style/BodyText"
                         android:id="@+id/credit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        tools:text="Y"/>
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Grade Info -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/tvGrade"
@@ -151,17 +147,18 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/grade"
-                    android:textColor="@color/gradeColorGreen"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    style="@style/BodyText"
                     android:id="@+id/grade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:textSize="18sp"
+                    tools:text="Z.ZZ"/>
             </LinearLayout>
 
         </LinearLayout>

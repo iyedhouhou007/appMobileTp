@@ -1,5 +1,6 @@
 package com.iyed_houhou.myappmobiletp.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -42,13 +43,69 @@ public class ModuleViewModel extends AndroidViewModel {
     public ModuleViewModel(Application application) {
         super(application);
         dbHelper = new DatabaseHelper(application.getApplicationContext());
+        // Automatically check and fetch modules when ViewModel is created
+        checkAndFetchModules();
     }
-    
+
     // Initialize with a specific student ID
     public void initForStudent(long studentId) {
         this.studentId = studentId;
         Log.d("ModuleViewModel", "Initializing for student ID: " + studentId);
-        checkAndFetchModules();
+
+        // If we already have modules, we just need to load the student's grades
+        if (modules.getValue() != null && !modules.getValue().isEmpty()) {
+            loadStudentGrades();
+        }
+        // Otherwise, the modules will be loaded by the checkAndFetchModules() call in the constructor
+    }
+
+    // Load grades for the current student
+    @SuppressLint("StaticFieldLeak")
+    private void loadStudentGrades() {
+        if (studentId <= 0 || modules.getValue() == null) {
+            return;
+        }
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                List<Module> currentModules = modules.getValue();
+
+                for (Module module : currentModules) {
+                    String gradeQuery = "SELECT * FROM " + DatabaseHelper.TABLE_GRADES +
+                            " WHERE " + DatabaseHelper.COLUMN_GRADE_STUDENT_ID + " = ? AND " +
+                            DatabaseHelper.COLUMN_GRADE_MODULE_ID + " = ?";
+
+                    Cursor gradeCursor = db.rawQuery(gradeQuery, new String[]{
+                            String.valueOf(studentId),
+                            String.valueOf(module.getModuleId())
+                    });
+
+                    if (gradeCursor != null && gradeCursor.moveToFirst()) {
+                        int tdGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_TD);
+                        int tpGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_TP);
+                        int examGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_EXAM);
+
+                        module.setNoteTD(gradeCursor.getDouble(tdGradeIndex));
+                        module.setNoteTP(gradeCursor.getDouble(tpGradeIndex));
+                        module.setNoteExam(gradeCursor.getDouble(examGradeIndex));
+
+                        gradeCursor.close();
+                    }
+                }
+
+                db.close();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                // Update the modules LiveData to trigger UI updates
+                modules.setValue(modules.getValue());
+                calculateOverallGrade();
+            }
+        }.execute();
     }
 
     // Check if modules exist in database, if not fetch from API
@@ -61,10 +118,10 @@ public class ModuleViewModel extends AndroidViewModel {
         List<Module> currentModules = modules.getValue();
         if (currentModules != null && position < currentModules.size()) {
             Module module = currentModules.get(position);
-            
+
             // Get existing module ID
             int moduleId = module.getModuleId();
-            
+
             switch (fieldType) {
                 case "TD":
                     module.setNoteTD(value);
@@ -76,16 +133,16 @@ public class ModuleViewModel extends AndroidViewModel {
                     module.setNoteExam(value);
                     break;
             }
-            
+
             // Save to database with student ID
-            new SaveGradeTask().execute(new GradeParams(studentId, moduleId, 
+            new SaveGradeTask().execute(new GradeParams(studentId, moduleId,
                 module.getNoteTD(), module.getNoteTP(), module.getNoteExam()));
-                
+
             modules.setValue(currentModules); // Trigger LiveData update
             calculateOverallGrade();
         }
     }
-    
+
     // Grade parameters class for AsyncTask
     private static class GradeParams {
         long studentId;
@@ -93,7 +150,7 @@ public class ModuleViewModel extends AndroidViewModel {
         double tdGrade;
         double tpGrade;
         double examGrade;
-        
+
         GradeParams(long studentId, int moduleId, double tdGrade, double tpGrade, double examGrade) {
             this.studentId = studentId;
             this.moduleId = moduleId;
@@ -102,50 +159,50 @@ public class ModuleViewModel extends AndroidViewModel {
             this.examGrade = examGrade;
         }
     }
-    
+
     // AsyncTask to save grades
     private class SaveGradeTask extends AsyncTask<GradeParams, Void, Void> {
         @Override
         protected Void doInBackground(GradeParams... params) {
             if (params.length == 0) return null;
-            
+
             GradeParams gradeParams = params[0];
             SQLiteDatabase db = dbHelper.getWritableDatabase();
-            
+
             try {
                 // Calculate the overall grade for the module
                 double grade = 0;
                 int count = 0;
-                
+
                 if (gradeParams.tdGrade > 0) {
                     grade += gradeParams.tdGrade;
                     count++;
                 }
-                
+
                 if (gradeParams.tpGrade > 0) {
                     grade += gradeParams.tpGrade;
                     count++;
                 }
-                
+
                 if (gradeParams.examGrade > 0) {
                     grade += gradeParams.examGrade;
                     count++;
                 }
-                
+
                 if (count > 0) {
                     grade = grade / count;
                 }
-                
+
                 // Check if grade already exists
-                String query = "SELECT * FROM " + DatabaseHelper.TABLE_GRADES + 
+                String query = "SELECT * FROM " + DatabaseHelper.TABLE_GRADES +
                                " WHERE " + DatabaseHelper.COLUMN_GRADE_STUDENT_ID + " = ? AND " +
                                DatabaseHelper.COLUMN_GRADE_MODULE_ID + " = ?";
-                               
+
                 Cursor cursor = db.rawQuery(query, new String[] {
                     String.valueOf(gradeParams.studentId),
                     String.valueOf(gradeParams.moduleId)
                 });
-                
+
                 ContentValues values = new ContentValues();
                 values.put(DatabaseHelper.COLUMN_GRADE_STUDENT_ID, gradeParams.studentId);
                 values.put(DatabaseHelper.COLUMN_GRADE_MODULE_ID, gradeParams.moduleId);
@@ -153,7 +210,7 @@ public class ModuleViewModel extends AndroidViewModel {
                 values.put(DatabaseHelper.COLUMN_GRADE_NOTE_TD, gradeParams.tdGrade);
                 values.put(DatabaseHelper.COLUMN_GRADE_NOTE_TP, gradeParams.tpGrade);
                 values.put(DatabaseHelper.COLUMN_GRADE_NOTE_EXAM, gradeParams.examGrade);
-                
+
                 if (cursor != null && cursor.moveToFirst()) {
                     // Update existing grade
                     db.update(DatabaseHelper.TABLE_GRADES, values,
@@ -167,14 +224,14 @@ public class ModuleViewModel extends AndroidViewModel {
                     // Insert new grade
                     db.insert(DatabaseHelper.TABLE_GRADES, null, values);
                 }
-                
+
                 if (cursor != null) {
                     cursor.close();
                 }
             } finally {
                 db.close();
             }
-            
+
             return null;
         }
     }
@@ -202,7 +259,7 @@ public class ModuleViewModel extends AndroidViewModel {
         protected List<Module> doInBackground(Void... voids) {
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             List<Module> moduleList = new ArrayList<>();
-            
+
             // First get all modules
             Log.d("ModuleViewModel", "Loading modules from database");
             Cursor cursor = db.query(
@@ -214,7 +271,7 @@ public class ModuleViewModel extends AndroidViewModel {
                     null,
                     null
             );
-            
+
             if (cursor != null && cursor.moveToFirst()) {
                 int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_MODULE_ID);
                 int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_MODULE_NAME);
@@ -222,7 +279,7 @@ public class ModuleViewModel extends AndroidViewModel {
                 int tpIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_MODULE_TP);
                 int coeffIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_MODULE_COEFFICIENT);
                 int creditIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_MODULE_CREDIT);
-                
+
                 do {
                     int id = cursor.getInt(idIndex);
                     String name = cursor.getString(nameIndex);
@@ -230,51 +287,51 @@ public class ModuleViewModel extends AndroidViewModel {
                     int tp = cursor.getInt(tpIndex);
                     int coefficient = cursor.getInt(coeffIndex);
                     int credit = cursor.getInt(creditIndex);
-                    
+
                     Module module = new Module(id, name, td, tp, coefficient, credit);
                     moduleList.add(module);
                 } while (cursor.moveToNext());
-                
+
                 cursor.close();
                 Log.d("ModuleViewModel", "Loaded " + moduleList.size() + " modules from database");
+
+                // If student ID is valid, load their grades for each module
+                if (studentId > 0 && !moduleList.isEmpty()) {
+                    Log.d("ModuleViewModel", "Loading grades for student ID: " + studentId);
+                    for (Module module : moduleList) {
+                        String gradeQuery = "SELECT * FROM " + DatabaseHelper.TABLE_GRADES +
+                                " WHERE " + DatabaseHelper.COLUMN_GRADE_STUDENT_ID + " = ? AND " +
+                                DatabaseHelper.COLUMN_GRADE_MODULE_ID + " = ?";
+
+                        Cursor gradeCursor = db.rawQuery(gradeQuery, new String[]{
+                                String.valueOf(studentId),
+                                String.valueOf(module.getModuleId())
+                        });
+
+                        if (gradeCursor != null && gradeCursor.moveToFirst()) {
+                            // Get grade indices
+                            int tdGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_TD);
+                            int tpGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_TP);
+                            int examGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_EXAM);
+
+                            // Set grades on the module
+                            module.setNoteTD(gradeCursor.getDouble(tdGradeIndex));
+                            module.setNoteTP(gradeCursor.getDouble(tpGradeIndex));
+                            module.setNoteExam(gradeCursor.getDouble(examGradeIndex));
+
+                            gradeCursor.close();
+                            Log.d("ModuleViewModel", "Found grades for module: " + module.getModuleName());
+                        } else {
+                            Log.d("ModuleViewModel", "No grades found for module: " + module.getModuleName());
+                        }
+                    }
+                } else {
+                    Log.d("ModuleViewModel", "Skipping grades, studentId: " + studentId + ", modules: " + moduleList.size());
+                }
             } else {
                 Log.d("ModuleViewModel", "No modules found in database");
             }
-            
-            // If student ID is valid, load their grades for each module
-            if (studentId > 0 && !moduleList.isEmpty()) {
-                Log.d("ModuleViewModel", "Loading grades for student ID: " + studentId);
-                for (Module module : moduleList) {
-                    String gradeQuery = "SELECT * FROM " + DatabaseHelper.TABLE_GRADES +
-                            " WHERE " + DatabaseHelper.COLUMN_GRADE_STUDENT_ID + " = ? AND " +
-                            DatabaseHelper.COLUMN_GRADE_MODULE_ID + " = ?";
-                            
-                    Cursor gradeCursor = db.rawQuery(gradeQuery, new String[]{
-                            String.valueOf(studentId),
-                            String.valueOf(module.getModuleId())
-                    });
-                    
-                    if (gradeCursor != null && gradeCursor.moveToFirst()) {
-                        // Get grade indices
-                        int tdGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_TD);
-                        int tpGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_TP);
-                        int examGradeIndex = gradeCursor.getColumnIndex(DatabaseHelper.COLUMN_GRADE_NOTE_EXAM);
-                        
-                        // Set grades on the module
-                        module.setNoteTD(gradeCursor.getDouble(tdGradeIndex));
-                        module.setNoteTP(gradeCursor.getDouble(tpGradeIndex));
-                        module.setNoteExam(gradeCursor.getDouble(examGradeIndex));
-                        
-                        gradeCursor.close();
-                        Log.d("ModuleViewModel", "Found grades for module: " + module.getModuleName());
-                    } else {
-                        Log.d("ModuleViewModel", "No grades found for module: " + module.getModuleName());
-                    }
-                }
-            } else {
-                Log.d("ModuleViewModel", "Skipping grades, studentId: " + studentId + ", modules: " + moduleList.size());
-            }
-            
+
             db.close();
             return moduleList;
         }
@@ -314,7 +371,7 @@ public class ModuleViewModel extends AndroidViewModel {
 
                 JSONArray jsonArray = new JSONArray(result.toString());
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                
+
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject obj = jsonArray.getJSONObject(i);
                     String moduleName = obj.getString("Nom_module");
@@ -322,10 +379,10 @@ public class ModuleViewModel extends AndroidViewModel {
                     int tp = obj.optInt("tp", 0);
                     int coefficient = obj.optInt("Coefficient", 1);
                     int credit = obj.optInt("Credit", 0);
-                    
+
                     // Create a module object
                     Module module = new Module(moduleName, td, tp, coefficient, credit);
-                    
+
                     // Store in database
                     ContentValues values = new ContentValues();
                     values.put(DatabaseHelper.COLUMN_MODULE_NAME, moduleName);
@@ -333,17 +390,17 @@ public class ModuleViewModel extends AndroidViewModel {
                     values.put(DatabaseHelper.COLUMN_MODULE_TP, tp);
                     values.put(DatabaseHelper.COLUMN_MODULE_COEFFICIENT, coefficient);
                     values.put(DatabaseHelper.COLUMN_MODULE_CREDIT, credit);
-                    
+
                     long id = db.insert(DatabaseHelper.TABLE_MODULES, null, values);
-                    
+
                     if (id != -1) {
                         // Set the ID from the database
                         module.setModuleId((int)id);
                     }
-                    
+
                     moduleList.add(module);
                 }
-                
+
                 db.close();
             } catch (Exception e) {
                 Log.e("FetchData", "Error fetching data", e);
@@ -355,7 +412,17 @@ public class ModuleViewModel extends AndroidViewModel {
         protected void onPostExecute(List<Module> moduleList) {
             if (moduleList != null && !moduleList.isEmpty()) {
                 modules.setValue(moduleList);
-                calculateOverallGrade();
+
+                // If a student ID is set, load their grades
+                if (studentId > 0) {
+                    loadStudentGrades();
+                } else {
+                    calculateOverallGrade();
+                }
+
+                Log.d("ModuleViewModel", "Successfully loaded " + moduleList.size() + " modules from API");
+            } else {
+                Log.d("ModuleViewModel", "Failed to load modules from API");
             }
         }
     }

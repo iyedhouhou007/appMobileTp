@@ -1,10 +1,12 @@
 package com.iyed_houhou.myappmobiletp.ui;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +17,12 @@ import androidx.core.view.WindowInsetsCompat;
 import com.iyed_houhou.myappmobiletp.DatabaseHelper;
 import com.iyed_houhou.myappmobiletp.R;
 
+
 public class StudentProfileActivity extends AppCompatActivity {
     private static final String TAG = "StudentProfileActivity";
     private DatabaseHelper dbHelper;
     private TextView tvStudentName, tvStudentId, tvUsername;
+    private Button btnViewGrades;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class StudentProfileActivity extends AppCompatActivity {
         tvStudentName = findViewById(R.id.tvStudentName);
         tvStudentId = findViewById(R.id.tvStudentId);
         tvUsername = findViewById(R.id.tvUsername);
+        btnViewGrades = findViewById(R.id.btnViewGrades);
         
         // Set up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -43,6 +48,12 @@ public class StudentProfileActivity extends AppCompatActivity {
             int statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
             v.setPadding(v.getPaddingLeft(), statusBarHeight, v.getPaddingRight(), v.getPaddingBottom());
             return insets;
+        });
+
+        btnViewGrades.setOnClickListener((e) -> {
+            Intent intent = new Intent(StudentProfileActivity.this, GradesActivity.class);
+            startActivity(intent);
+
         });
         
         // Initialize database helper

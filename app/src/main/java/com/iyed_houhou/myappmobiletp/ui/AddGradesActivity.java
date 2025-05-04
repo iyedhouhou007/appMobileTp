@@ -18,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.iyed_houhou.myappmobiletp.DatabaseHelper;
 import com.iyed_houhou.myappmobiletp.R;
@@ -56,6 +59,21 @@ public class AddGradesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_grades);
 
         dbHelper = new DatabaseHelper(this);
+
+        // Set up toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Add Student Grades");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        
+        // Apply system spacing (status bar height) to the Toolbar
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(v.getPaddingLeft(), statusBarHeight, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
 
         // Initialize UI components
         tvTeacherInfo = findViewById(R.id.tvTeacherInfo);
@@ -135,6 +153,12 @@ public class AddGradesActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void loadTeacherInfo(String username) {

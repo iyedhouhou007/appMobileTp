@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.iyed_houhou.myappmobiletp.DatabaseHelper;
 import com.iyed_houhou.myappmobiletp.R;
@@ -35,14 +36,19 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
 
+        // Set up toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Register");
+
         dbHelper = new DatabaseHelper(this);
 
-        etUsername = findViewById(R.id.etRegisterUsername);
-        etPassword = findViewById(R.id.etRegisterPassword);
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         spinnerRole = findViewById(R.id.spinnerRole);
         btnRegister = findViewById(R.id.btnRegister);
-        tvLoginLink = findViewById(R.id.tvLoginLink);
+        tvLoginLink = findViewById(R.id.tvLogin);
 
         // Set up the spinner adapter
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,

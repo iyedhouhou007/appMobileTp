@@ -4,9 +4,9 @@
     <string name="register">Register</string>
     <string name="td_mark">TD</string>
     <string name="exam_mark">EXAM</string>
-    <string name="coefficient">coefficient\n</string>
-    <string name="credit">"credit: "</string>
-    <string name="grade">"grade: "</string>
+    <string name="coefficient">coefficient: </string>
+    <string name="credit">credit: </string>
+    <string name="grade">grade: </string>
     <string-array name="user_roles">
         <item>Student</item>
         <item>Teacher</item>

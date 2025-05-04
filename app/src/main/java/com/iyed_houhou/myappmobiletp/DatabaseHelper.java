@@ -8,7 +8,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "StudentGradesApp.db";
-    private static final int DATABASE_VERSION = 7; // Increment version after adding new table
+    private static final int DATABASE_VERSION = 10; // Increased from 9 to reset the database
 
     // Table names
     public static final String TABLE_USERS = "users";

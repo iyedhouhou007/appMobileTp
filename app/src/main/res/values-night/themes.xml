@@ -1,7 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MyAppMobileTp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <!-- Night Mode Theme -->
+    <style name="Base.Theme.MyAppMobileTp.Night" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/primaryColorGreen</item>
+        <item name="colorPrimaryVariant">@color/accentColorGreen</item>
+        <item name="colorOnPrimary">@color/black</item> <!-- switched to dark-on-light if using lighter primary -->
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/gradeColorGreen</item>
+        <item name="colorSecondaryVariant">@color/gradeColorRed</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Background and surface colors -->
+        <item name="android:colorBackground">@color/nightBackgroundColor</item>
+        <item name="colorSurface">@color/nightSurfaceColor</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+
+        <!-- Error colors -->
+        <item name="colorError">@color/red</item>
+        <item name="colorOnError">@color/black</item>
+
+        <!-- Dark status bar icons off -->
+        <item name="android:windowLightStatusBar">false</item>
     </style>
+
+    <style name="Theme.MyAppMobileTp.Night" parent="Base.Theme.MyAppMobileTp.Night" />
 </resources>

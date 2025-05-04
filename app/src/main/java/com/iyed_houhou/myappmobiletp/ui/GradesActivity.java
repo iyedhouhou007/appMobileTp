@@ -64,8 +64,7 @@ public class GradesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("My Grades");
-            // Optional: Show back button
-            // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         // Apply system spacing (status bar height) to the Toolbar
@@ -119,13 +118,18 @@ public class GradesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu_grades) {
-            // We're already in the grades activity
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
             return true;
         }
-        else if (id == R.id.menu_profile) {
+        int id = item.getItemId();
+
+//        if (id == R.id.menu_grades) {
+//            // We're already in the grades activity
+//            return true;
+//        }
+//        else
+        if (id == R.id.menu_profile) {
             // Navigate to student profile
             Intent profileIntent = new Intent(this, StudentProfileActivity.class);
             profileIntent.putExtra("username", username);

@@ -11,4 +11,6 @@
     <color name="backgroundColor">#FFDCEDC8</color>
     <color name="black">#000</color>
     <color name="disabledTextColor">#9E9E9E</color>
+    <color name="nightBackgroundColor">#fff</color> <!-- Explicitly defining dark background -->
+    <color name="nightSurfaceColor">#fff</color> <!-- Slightly lighter than background -->
 </resources>

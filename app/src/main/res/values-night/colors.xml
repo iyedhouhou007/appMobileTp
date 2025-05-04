@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Card and surface colors -->
+    <color name="cardColorGreen">#1B2B1B</color> <!-- Dark muted green -->
+    <color name="nightSurfaceColor">#1E1E1E</color> <!-- Slightly lighter than background -->
+    
+    <!-- Brand colors -->
+    <color name="primaryColorGreen">#81C784</color> <!-- Soft green for primary, better contrast -->
+    <color name="accentColorGreen">#A5D6A7</color> <!-- Lighter accent color -->
+    
+    <!-- Functional colors -->
+    <color name="gradeColorGreen">#66BB6A</color> <!-- Light green for positive grades -->
+    <color name="gradeColorRed">#EF5350</color> <!-- Light red for bad grades -->
+    <color name="red">#FF5252</color> <!-- Bright red for errors -->
+    <color name="warningColorGreen">#FFF176</color> <!-- Yellow with better dark mode contrast -->
+    
+    <!-- Base colors -->
+    <color name="white">#FFFFFF</color> <!-- Pure white for text -->
+    <color name="black">#000000</color> <!-- Pure black -->
+    <color name="backgroundColor">#121212</color> <!-- Material dark theme background -->
+    <color name="disabledTextColor">#BDBDBD</color> <!-- Light grey for disabled text -->
+    
+    <!-- Legacy colors (kept for backward compatibility) -->
+    <color name="nightBackgroundColor">@color/backgroundColor</color> <!-- Alias -->
+</resources>
