@@ -112,12 +112,13 @@ public class TeacherRegistrationActivity extends AppCompatActivity {
                     }
                     
                     Toast.makeText(TeacherRegistrationActivity.this, "Teacher registered successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(TeacherRegistrationActivity.this, TeacherActivity.class);
+                    Intent intent = new Intent(TeacherRegistrationActivity.this, MenuActivity.class);
                     
-                    // Pass the username to TeacherActivity
+                    // Pass the username and role to MenuActivity
                     if (username != null) {
                         intent.putExtra("username", username);
                     }
+                    intent.putExtra("userRole", "Teacher");
                     
                     startActivity(intent);
                     finish();

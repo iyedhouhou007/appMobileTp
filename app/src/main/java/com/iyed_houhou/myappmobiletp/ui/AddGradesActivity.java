@@ -148,7 +148,9 @@ public class AddGradesActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddGradesActivity.this, TeacherActivity.class);
+                Intent intent = new Intent(AddGradesActivity.this, MenuActivity.class);
+                intent.putExtra("username", getIntent().getStringExtra("username"));
+                intent.putExtra("userRole", "Teacher");
                 startActivity(intent);
                 finish();
             }
@@ -486,4 +488,4 @@ public class AddGradesActivity extends AppCompatActivity {
             this.credit = credit;
         }
     }
-} 
+}

@@ -77,11 +77,12 @@ public class StudentRegistrationActivity extends AppCompatActivity {
                     
                     Toast.makeText(StudentRegistrationActivity.this, "Registration completed successfully", Toast.LENGTH_SHORT).show();
                     
-                    // Navigate to GradesActivity
-                    Intent intent = new Intent(StudentRegistrationActivity.this, GradesActivity.class);
+                    // Navigate to MenuActivity instead of GradesActivity
+                    Intent intent = new Intent(StudentRegistrationActivity.this, MenuActivity.class);
                     if (username != null) {
                         intent.putExtra("username", username);
                     }
+                    intent.putExtra("userRole", "Student");
                     startActivity(intent);
                     finish();
                 } else {
@@ -112,4 +113,4 @@ public class StudentRegistrationActivity extends AppCompatActivity {
         }
         return newRowId;
     }
-} 
+}
