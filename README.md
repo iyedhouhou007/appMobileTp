@@ -1,6 +1,6 @@
-# MyAppMobileTp
+# StudentGradesManager
 
-MyAppMobileTp is an Android application for managing student grades, modules, and user roles (Student/Teacher). It features user registration, login, profile management, grade entry (by teachers), and grade viewing (by students). The app uses an SQLite database and follows the MVVM architecture with LiveData and ViewModel.
+StudentGradesManager is an Android application for managing student grades, modules, and user roles (Student/Teacher). It features user registration, login, profile management, grade entry (by teachers), and grade viewing (by students). The app uses an SQLite database and follows the MVVM architecture with LiveData and ViewModel.
 
 ## Features
 
